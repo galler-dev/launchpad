@@ -24,6 +24,14 @@ contract LaunchpadNFT is ERC721Enumerable, Ownable {
         require(msg.sender == LAUNCHPAD, "must call by launchpad");
         _;
     }
+
+    function getMaxLaunchpadSupply() view public returns (uint256) {
+        return LAUNCH_MAX_SUPPLY;
+    }
+
+    function getLaunchpadSupply() view public returns (uint256) {
+        return LAUNCH_SUPPLY;
+    }
     // end
 
     constructor(string memory name_, string memory symbol_, string memory baseURI_, address launchpad, uint256 maxSupply) ERC721(name_, symbol_) {

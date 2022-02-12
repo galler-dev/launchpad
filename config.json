@@ -1,0 +1,8 @@
+{
+  "deployed": {
+    "bsc_testnet": {
+      "launchpad": "0x525b8D2eA23fA1501F6a89fB316C2870cA60E42C",
+      "launchpadNFT": "0xEc18126143C0BdE69125c0F391517F76328DBae1"
+    }
+  }
+}
