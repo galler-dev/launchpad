@@ -6,6 +6,8 @@ import "./ILaunchpadNFT.sol";
 
 contract Launchpad is Ownable {
 
+    event Mint(address indexed contractAddress, address payeeAddress, uint256 size, uint256 price);
+
     struct Campaign {
         address contractAddress;
         address payeeAddress;
@@ -39,6 +41,7 @@ contract Launchpad is Ownable {
         payable(campaign.payeeAddress).transfer(totalPrice);
         ILaunchpadNFT(contractAddress).mintTo(msg.sender, batchSize);
 
+        emit Mint(campaign.contractAddress, campaign.payeeAddress, batchSize, campaign.price);
         // return
         payable(_msgSender()).transfer(msg.value - totalPrice);
     }
