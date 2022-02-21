@@ -1,9 +1,9 @@
 {
   "deployed": {
     "bsc_testnet": {
-      "launchpad": "0x4654B8152d3dc45CceC5407Ffd7b8d6229E29334",
+      "launchpad": "0x61635d3FaCd76a6744B7a7f81Fa29c5c1cD35616",
       "launchpadNFT": "0x811057Cc5A387B7D3ce53B0C8635DD045c3E905c",
-      "launchpadNFTFactory": "0xa31f9ab77e13f8F58B430A0C685D1507e4989D31"
+      "launchpadNFTFactory": "0xCC2e673bdEd89763167737387d96FBFD002990B1"
     },
     "rinkeby": {
       "launchpad": "0xbC762B4666a08315dC9515194AC5EeAa4b6249e7",
