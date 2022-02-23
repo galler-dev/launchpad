@@ -66,8 +66,12 @@ contract Launchpad is Ownable, ReentrancyGuard {
         return _mintPerAddress[contractAddress][userAddress];
     }
 
-    function getMaxSupply(address contractAddress) view external returns (uint256) {
+    function getLaunchpadMaxSupply(address contractAddress) view external returns (uint256) {
         return ILaunchpadNFT(contractAddress).getMaxLaunchpadSupply();
+    }
+
+    function getLaunchpadSupply(address contractAddress) view external returns (uint256) {
+        return ILaunchpadNFT(contractAddress).getLaunchpadSupply();
     }
 
     function addCampaign(address contractAddress_, address payeeAddress_, uint256 price_,

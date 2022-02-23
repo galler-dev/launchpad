@@ -7,7 +7,7 @@ contract("Launchpad", (accounts) => {
     it("add campaign", async () => {
         // console.log("test start")
         let launchpad = await Launchpad.new();
-        let nft = await LaunchpadNFT.new("LaunchpadNFT", "LNFT", "https://metadata.com/nft/", launchpad.address, 10);
+        let nft = await LaunchpadNFT.new("LaunchpadNFT", "LNFT", "https://metadata.com/nft/", ".json", launchpad.address, 10);
         // addActivity(address contractAddress_, uint256 price_, uint256 totalSupply_, uint256 listingTime_, uint256 expirationTime_, uint256 maxBatch_)
         truffleAssert.reverts(launchpad.addCampaign("0x0000000000000000000000000000000000000000", accounts[1], web3.utils.toWei("0.001", "ether"), 1644390809, 1744390809, 1, 2), "contract address can not be empty");
         truffleAssert.reverts(launchpad.addCampaign(nft.address, "0x0000000000000000000000000000000000000000", web3.utils.toWei("0.001", "ether"), 1644390809, 1744390809, 1, 2), "payee address can not be empty");
@@ -19,7 +19,7 @@ contract("Launchpad", (accounts) => {
     it("mint", async () => {
         // console.log("test start")
         let launchpad = await Launchpad.new();
-        let nft = await LaunchpadNFT.new("LaunchpadNFT", "LNFT", "https://metadata.com/nft/", launchpad.address, 10);
+        let nft = await LaunchpadNFT.new("LaunchpadNFT", "LNFT", "https://metadata.com/nft/", ".json", launchpad.address, 10);
         // addCampaign(address contractAddress_, uint256 price_, uint256 totalSupply_, uint256 listingTime_, uint256 expirationTime_, uint256 maxBatch_)
         await truffleAssert.reverts(launchpad.mint(nft.address, 1), "contract not register");
         await truffleAssert.passes(launchpad.addCampaign(nft.address, accounts[1], web3.utils.toWei("0.001", "ether"), 1644390809, 1744390809, 1, 2));
@@ -32,14 +32,17 @@ contract("Launchpad", (accounts) => {
         let mintPerAddress = await launchpad.getMintPerAddress(nft.address, accounts[0]);
         assert.equal(mintPerAddress.toNumber(), 1);
 
-        let maxSupply = await launchpad.getMaxSupply(nft.address);
+        let maxSupply = await launchpad.getLaunchpadMaxSupply(nft.address);
         assert.equal(maxSupply.toNumber(), 10);
+
+        let supply = await launchpad.getLaunchpadSupply(nft.address);
+        assert.equal(supply.toNumber(), 1);
     });
 
     it("mint per address", async () => {
         // console.log("test start")
         let launchpad = await Launchpad.new();
-        let nft = await LaunchpadNFT.new("LaunchpadNFT", "LNFT", "https://metadata.com/nft/", launchpad.address, 10);
+        let nft = await LaunchpadNFT.new("LaunchpadNFT", "LNFT", "https://metadata.com/nft/", ".json", launchpad.address, 10);
         // addCampaign(address contractAddress_, uint256 price_, uint256 totalSupply_, uint256 listingTime_, uint256 expirationTime_, uint256 maxBatch_)
         await truffleAssert.reverts(launchpad.mint(nft.address, 1), "contract not register");
         await truffleAssert.passes(launchpad.addCampaign(nft.address, accounts[1], web3.utils.toWei("0.001", "ether"), 1644390809, 1744390809, 3, 2));
@@ -53,7 +56,7 @@ contract("Launchpad", (accounts) => {
     it("batch limit", async () => {
         // console.log("test start")
         let launchpad = await Launchpad.new();
-        let nft = await LaunchpadNFT.new("LaunchpadNFT", "LNFT", "https://metadata.com/nft/", launchpad.address, 10);
+        let nft = await LaunchpadNFT.new("LaunchpadNFT", "LNFT", "https://metadata.com/nft/", ".json", launchpad.address, 10);
         // addActivity(address contractAddress_, uint256 price_, uint256 totalSupply_, uint256 listingTime_, uint256 expirationTime_, uint256 maxBatch_)
         await truffleAssert.passes(launchpad.addCampaign(nft.address, accounts[1], web3.utils.toWei("0.001", "ether"), 1644390809, 1744390809, 1, 2));
         await truffleAssert.reverts(launchpad.mint(nft.address, 2, {value : web3.utils.toWei("0.002", "ether")}), "reach max batch size");
@@ -62,7 +65,7 @@ contract("Launchpad", (accounts) => {
     it("supply limit", async () => {
         // console.log("test start")
         let launchpad = await Launchpad.new();
-        let nft = await LaunchpadNFT.new("LaunchpadNFT", "LNFT", "https://metadata.com/nft/", launchpad.address, 10);
+        let nft = await LaunchpadNFT.new("LaunchpadNFT", "LNFT", "https://metadata.com/nft/", ".json", launchpad.address, 10);
         // addActivity(address contractAddress_, uint256 price_, uint256 totalSupply_, uint256 listingTime_, uint256 expirationTime_, uint256 maxBatch_)
         await truffleAssert.passes(launchpad.addCampaign(nft.address, accounts[1], web3.utils.toWei("0.001", "ether"), 1644390809, 1744390809, 10, 10));
         await truffleAssert.passes(launchpad.mint(nft.address, 10, {value : web3.utils.toWei("0.01", "ether")}));
@@ -72,7 +75,7 @@ contract("Launchpad", (accounts) => {
     it("payee", async () => {
         // console.log("test start")
         let launchpad = await Launchpad.new();
-        let nft = await LaunchpadNFT.new("LaunchpadNFT", "LNFT", "https://metadata.com/nft/", launchpad.address, 10);
+        let nft = await LaunchpadNFT.new("LaunchpadNFT", "LNFT", "https://metadata.com/nft/", ".json", launchpad.address, 10);
         // addActivity(address contractAddress_, uint256 price_, uint256 totalSupply_, uint256 listingTime_, uint256 expirationTime_, uint256 maxBatch_)
         const account1BalanceBefore = await web3.eth.getBalance(accounts[1]);
 
@@ -87,7 +90,7 @@ contract("Launchpad", (accounts) => {
     it("time limit", async () => {
         // console.log("test start")
         let launchpad = await Launchpad.new();
-        let nft = await LaunchpadNFT.new("LaunchpadNFT", "LNFT", "https://metadata.com/nft/", launchpad.address, 10);
+        let nft = await LaunchpadNFT.new("LaunchpadNFT", "LNFT", "https://metadata.com/nft/", ".json", launchpad.address, 10);
         // addActivity(address contractAddress_, uint256 price_, uint256 totalSupply_, uint256 listingTime_, uint256 expirationTime_, uint256 maxBatch_)
         await truffleAssert.passes(launchpad.addCampaign(nft.address, accounts[1], web3.utils.toWei("0.001", "ether"), 1744390809, 1744390809, 10, 10));
         await truffleAssert.reverts(launchpad.mint(nft.address, 10, {value : web3.utils.toWei("0.01", "ether")}), "activity not start");

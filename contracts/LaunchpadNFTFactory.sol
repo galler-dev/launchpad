@@ -8,8 +8,8 @@ contract LaunchpadNFTFactory {
 
     event CreateNFT(address nftAddress, string name, string symbol);
 
-    function createNFT(string memory name, string memory symbol, string memory baseURI, address launchpad, uint256 maxSupply) external {
-        LaunchpadNFT nft = new LaunchpadNFT(name, symbol, baseURI, launchpad, maxSupply);
+    function createNFT(string memory name, string memory symbol, string memory baseURI, string memory suffix, address launchpad, uint256 maxSupply) external {
+        LaunchpadNFT nft = new LaunchpadNFT(name, symbol, baseURI, suffix, launchpad, maxSupply);
         emit CreateNFT(address(nft), name, symbol);
     }
 }

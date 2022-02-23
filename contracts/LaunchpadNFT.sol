@@ -12,6 +12,7 @@ contract LaunchpadNFT is ERC721Enumerable, Ownable {
     using Strings for uint256;
 
     string public baseURI;
+    string public suffix;
 
     // must impl this in your NFT contract, and make it public
     uint256 public LAUNCH_MAX_SUPPLY;    // max launch supply
@@ -34,8 +35,9 @@ contract LaunchpadNFT is ERC721Enumerable, Ownable {
     }
     // end
 
-    constructor(string memory name_, string memory symbol_, string memory baseURI_, address launchpad, uint256 maxSupply) ERC721(name_, symbol_) {
+    constructor(string memory name_, string memory symbol_, string memory baseURI_, string memory suffix_, address launchpad, uint256 maxSupply) ERC721(name_, symbol_) {
         baseURI = baseURI_;
+        suffix = suffix_;
         LAUNCHPAD = launchpad;
         LAUNCH_MAX_SUPPLY = maxSupply;
     }
@@ -50,7 +52,7 @@ contract LaunchpadNFT is ERC721Enumerable, Ownable {
 
     function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
         require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token.");
-        return string(abi.encodePacked(baseURI, tokenId.toString()));
+        return string(abi.encodePacked(baseURI, tokenId.toString(), suffix));
     }
 
     // you must impl this in your NFT contract
