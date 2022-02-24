@@ -37,7 +37,7 @@ const ledgerETHMainNetOptions = {
   accountsOffset: 0
 };
 
-const mnemonic = "art dash humor robust bamboo metal agent curtain clean forum soap saddle";
+const mnemonic = "";
 
 module.exports = {
   /**
